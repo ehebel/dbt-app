@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mi Compañero DBT - Seguimiento y Habilidades</title>
+  <meta name="description" content="Aplicación web responsiva de seguimiento de terapia dialéctico-conductual (DBT), registro diario de emociones, catálogo de habilidades y plan de crisis SOS.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="app">
+    <!-- Header Principal -->
+    <header class="app-header">
+      <div class="brand-badge" id="brand-home-btn" title="Ir al Inicio">
+        <div class="brand-icon-wrapper">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+            <path d="M12 6a6 6 0 0 0-6 6c0 3.31 2.69 6 6 6s6-2.69 6-6"/>
+            <circle cx="12" cy="12" r="2"/>
+          </svg>
+        </div>
+        <div class="brand-info">
+          <h1>Mi Compañero DBT</h1>
+          <p id="header-user-status">Seguimiento diario y habilidades</p>
+        </div>
+      </div>
+
+      <!-- Navegación Desktop -->
+      <nav class="desktop-nav" id="desktop-nav">
+        <button class="nav-pill active" data-target="home-view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+          Inicio
+        </button>
+        <button class="nav-pill" data-target="step1-view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Registro Diario
+        </button>
+        <button class="nav-pill" data-target="skills-view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+          Habilidades
+        </button>
+        <button class="nav-pill" data-target="therapist-view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          Terapeuta
+        </button>
+        <button class="nav-pill sos-pill" data-target="crisis-view">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          SOS Crisis
+        </button>
+      </nav>
+
+      <div class="header-actions">
+        <button class="btn btn-sm btn-outline" id="session-toggle-btn" title="Cerrar o cambiar sesión">
+          Cerrar sesión
+        </button>
+      </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="main-content">
+
+      <!-- ==============================================
+           1. VISTA: INICIO DE SESIÓN (Mockup 1)
+           ============================================== -->
+      <section id="login-view" class="view">
+        <div style="max-width: 440px; margin: 30px auto;">
+          <div class="card" style="text-align: center; padding: 36px 28px;">
+            <div class="brand-icon-wrapper" style="width: 64px; height: 64px; margin: 0 auto 18px; border-radius: var(--radius-lg);">
+              <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/>
+                <path d="M2 12h20"/>
+              </svg>
+            </div>
+            
+            <h2 style="font-size: 1.6rem; color: var(--color-primary); font-weight: 700;">Mi Compañero DBT</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px; margin-bottom: 24px;">
+              Seguimiento diario y habilidades DBT
+            </p>
+
+            <form id="login-form">
+              <div class="form-group" style="text-align: left;">
+                <label class="form-label" for="login-email">Usuario o correo</label>
+                <input class="form-input" id="login-email" type="email" value="paciente@programa-dbt.cl" required autocomplete="username">
+              </div>
+
+              <div class="form-group" style="text-align: left;">
+                <label class="form-label" for="login-password">Contraseña</label>
+                <input class="form-input" id="login-password" type="password" value="********" required autocomplete="current-password">
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-full btn-lg" style="margin-top: 10px;">
+                Ingresar
+              </button>
+            </form>
+
+            <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-subtle); display: flex; flex-direction: column; gap: 12px;">
+              <button class="multiline-card-btn sos-card" id="quick-sos-btn" type="button" style="margin-bottom: 0;">
+                <div class="btn-body">
+                  <div class="icon-box" style="background: var(--color-rose-soft); color: var(--color-rose);">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  </div>
+                  <div class="btn-texts">
+                    <h3 style="color: var(--color-rose);">Acceso Rápido: Plan de Crisis SOS</h3>
+                    <p>Usa tus herramientas de emergencia sin clave</p>
+                  </div>
+                </div>
+                <span class="action-badge">SOS</span>
+              </button>
+
+              <button class="btn btn-outline btn-full" id="quick-therapist-btn" type="button">
+                Acceso Terapeuta: Gráfico Semanal →
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           2. VISTA: MENÚ PRINCIPAL (Mockup 2)
+           ============================================== -->
+      <section id="home-view" class="view">
+        <!-- Saludo y Racha -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 22px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 style="font-size: 1.55rem; font-weight: 700; color: var(--text-main);">Hola, María</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; display: flex; align-items: center; gap: 8px;">
+              <span>Programa DBT</span>
+              <span>•</span>
+              <span class="pill-badge pill-badge-green" style="font-size: 0.825rem; font-weight: 700;">
+                🔥 Racha actual: <span id="home-streak-days">5</span> días
+              </span>
+            </p>
+          </div>
+          <button class="btn btn-sm btn-outline" id="btn-nueva-semana">
+            ↺ Actualizar Semana
+          </button>
+        </div>
+
+        <!-- Botones de Acción Primaria (Multiline Buttons de Balsamiq) -->
+        <div style="display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px;">
+          <!-- 1. Hoja de Registro Diario -->
+          <div class="multiline-card-btn" data-action="go-register">
+            <div class="btn-body">
+              <div class="icon-box" style="background: var(--color-primary-soft); color: var(--color-primary);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </div>
+              <div class="btn-texts">
+                <h3>Hoja de Registro Diario</h3>
+                <p>Paso 1: Emociones • Paso 2: Habilidades</p>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-primary">Abrir</button>
+          </div>
+
+          <!-- 2. Módulo de Habilidades DBT -->
+          <div class="multiline-card-btn" data-action="go-skills">
+            <div class="btn-body">
+              <div class="icon-box" style="background: var(--color-lavender-soft); color: var(--color-lavender);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+              </div>
+              <div class="btn-texts">
+                <h3>Módulo de Habilidades DBT</h3>
+                <p>Menú desplegable de los 4 módulos y 17 habilidades</p>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-secondary">Abrir</button>
+          </div>
+
+          <!-- 3. Plan de Crisis (SOS) -->
+          <div class="multiline-card-btn sos-card" data-action="go-crisis">
+            <div class="btn-body">
+              <div class="icon-box" style="background: var(--color-rose-soft); color: var(--color-rose);">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div class="btn-texts">
+                <h3 style="color: var(--color-rose);">Plan de Crisis (SOS)</h3>
+                <p>Pasos TIPP y contactos de emergencia</p>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-sos">SOS</button>
+          </div>
+        </div>
+
+        <!-- Tarjeta DBT de Resumen Semanal -->
+        <div class="card" style="margin-bottom: 24px; background: linear-gradient(145deg, #FFFFFF, var(--color-primary-subtle));">
+          <div class="card-title">
+            <span>Resumen Semanal (Tarjeta DBT)</span>
+            <span class="pill-badge pill-badge-purple">Semana en curso</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px; font-size: 0.95rem;">
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="color: var(--color-primary); font-size: 1.1rem;">•</span>
+              <span><strong>Registros completados:</strong> <span id="home-completed-records">5</span> / 7 días</span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="color: var(--color-primary); font-size: 1.1rem;">•</span>
+              <span><strong>Habilidad más usada:</strong> <span id="home-most-used-skill">Atención Plena (Mente Sabia)</span></span>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="color: var(--color-primary); font-size: 1.1rem;">•</span>
+              <span><strong>Próxima sesión individual:</strong> <span id="home-next-session">Martes 16:00 hrs</span></span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acceso Terapeuta -->
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <button class="btn btn-outline" id="home-to-therapist-btn">
+            Vista Terapeuta: Gráfico Semanal →
+          </button>
+          <button class="btn btn-sm btn-outline" id="home-logout-btn" style="color: var(--text-muted);">
+            Cerrar sesión
+          </button>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           3. VISTA: REGISTRO DIARIO - PASO 1: EMOCIONES (Mockup 3)
+           ============================================== -->
+      <section id="step1-view" class="view">
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <span class="pill-badge pill-badge-purple" style="margin-bottom: 6px;">Paso 1 de 2</span>
+              <h2 style="font-size: 1.45rem; font-weight: 700; color: var(--text-main);">Registro Diario (1/2)</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 8px;">
+              <label for="step1-date-select" style="font-size: 0.85rem; font-weight: 600; color: var(--text-muted);">Fecha:</label>
+              <select id="step1-date-select" class="form-select" style="width: auto; padding: 6px 14px; font-size: 0.875rem;">
+                <!-- Dinámico -->
+              </select>
+            </div>
+          </div>
+
+          <form id="step1-form">
+            <!-- Sección 1: Emociones (Escala 0 a 5) -->
+            <div style="margin-bottom: 26px;">
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--color-primary); margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+                <span>1. Emociones (Escala 0 a 5)</span>
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
+                Evalúa la intensidad máxima sentida hoy en cada emoción (0 = nada, 5 = desbordante).
+              </p>
+              
+              <div id="emotions-sliders-container">
+                <!-- Generado dinámicamente -->
+              </div>
+            </div>
+
+            <!-- Sección 2: Impulsos y Conducta Problema -->
+            <div style="margin-bottom: 26px;">
+              <h3 style="font-size: 1.1rem; font-weight: 700; color: var(--color-peach); margin-bottom: 6px;">
+                2. Impulsos y Conducta Problema (EVA 0/5)
+              </h3>
+              <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
+                Registra la intensidad del impulso y si la conducta fue realizada o prevenida.
+              </p>
+
+              <div style="display: flex; justify-content: space-between; padding: 6px 14px; font-size: 0.775rem; font-weight: 700; color: var(--text-muted); border-bottom: 1px solid var(--border-subtle); margin-bottom: 8px;">
+                <span>Conducta / Idea</span>
+                <span style="display: flex; gap: 24px;">
+                  <span>Escala 0/5</span>
+                  <span>¿Realizada?</span>
+                </span>
+              </div>
+
+              <div id="behaviors-container">
+                <!-- Generado dinámicamente -->
+              </div>
+            </div>
+
+            <!-- Sección 3: Notas / Evento desencadenante -->
+            <div class="form-group" style="margin-bottom: 22px;">
+              <label class="form-label" for="step1-notes">
+                3. Notas / Evento desencadenante:
+              </label>
+              <textarea id="step1-notes" class="form-textarea" placeholder="Ejemplo: Sentí ansiedad antes de la reunión, pero apliqué respiración pausada (TIPP) y Mente Sabia."></textarea>
+            </div>
+
+            <div style="background: var(--color-primary-soft); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 22px; font-size: 0.85rem; color: var(--color-primary-hover); display: flex; align-items: center; gap: 8px;">
+              <span>ℹ️</span>
+              <span><strong>Paso obligatorio:</strong> Registra las habilidades usadas en el Paso 2 para completar tu tarjeta.</span>
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: flex-end; flex-wrap: wrap;">
+              <button type="button" class="btn btn-outline" id="step1-cancel-btn">
+                Cancelar / Volver al Inicio
+              </button>
+              <button type="submit" class="btn btn-primary" id="step1-next-btn">
+                Siguiente: Habilidades Usadas (Paso 2/2) →
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           4. VISTA: REGISTRO DIARIO - PASO 2: HABILIDADES (Mockup 4)
+           ============================================== -->
+      <section id="step2-view" class="view">
+        <div class="card">
+          <div style="margin-bottom: 20px;">
+            <span class="pill-badge pill-badge-green" style="margin-bottom: 6px;">Paso 2 de 2</span>
+            <h2 style="font-size: 1.45rem; font-weight: 700; color: var(--text-main);">Registro Diario (Paso 2 de 2)</h2>
+            <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 4px;">
+              * Paso obligatorio: Marca las habilidades que pusiste en práctica hoy para gestionar tus emociones.
+            </p>
+          </div>
+
+          <form id="step2-form">
+            <div id="step2-modules-container">
+              <!-- Checkboxes agrupados por módulos DBT -->
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: space-between; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-subtle); flex-wrap: wrap;">
+              <button type="button" class="btn btn-outline" id="step2-back-btn">
+                ← Paso 1
+              </button>
+              <button type="submit" class="btn btn-primary btn-lg" id="step2-save-btn">
+                Finalizar y Guardar ✓
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           5. VISTA: MÓDULO DE HABILIDADES (Mockup 5)
+           ============================================== -->
+      <section id="skills-view" class="view">
+        <div style="margin-bottom: 20px;">
+          <h2 style="font-size: 1.55rem; font-weight: 700; color: var(--text-main);">Módulo de Habilidades</h2>
+          <p style="color: var(--text-muted); font-size: 0.925rem;">
+            Despliega un módulo y presiona una habilidad para ver su resumen y guía paso a paso:
+          </p>
+        </div>
+
+        <!-- Buscador de Habilidades -->
+        <div style="margin-bottom: 18px;">
+          <input type="text" id="skills-search-input" class="form-input" placeholder="🔍 Buscar habilidad (ej. STOP, TIPP, Mente Sabia, DEAR MAN)...">
+        </div>
+
+        <!-- Acordeón de 4 Módulos DBT -->
+        <div id="modules-accordion-container">
+          <!-- Generado dinámicamente -->
+        </div>
+
+        <div style="margin-top: 24px; display: flex; justify-content: flex-start;">
+          <button class="btn btn-outline" id="skills-back-home-btn">
+            ← Volver al Menú Principal
+          </button>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           5.x VISTA DETALLADA DE HABILIDAD (Mockups 5.1 a 5.17)
+           ============================================== -->
+      <section id="skill-detail-view" class="view">
+        <div class="card">
+          <!-- Header de Detalle -->
+          <div style="margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border-subtle);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <span id="skill-detail-module-badge" class="pill-badge pill-badge-purple">Módulo</span>
+              <button class="btn btn-sm btn-outline" id="skill-detail-close-btn">
+                ← Volver al Menú de Habilidades
+              </button>
+            </div>
+            <h2 id="skill-detail-title" style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);">
+              Nombre de Habilidad
+            </h2>
+          </div>
+
+          <!-- Contenido de Habilidad -->
+          <div style="display: flex; flex-direction: column; gap: 20px; font-size: 0.95rem; line-height: 1.6;">
+            <!-- ¿Qué es? -->
+            <div style="background: var(--color-primary-subtle); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--color-primary);">
+              <h4 style="font-size: 1rem; font-weight: 700; color: var(--color-primary-hover); margin-bottom: 6px;">
+                ¿En qué consiste?
+              </h4>
+              <p id="skill-detail-what" style="color: var(--text-main);"></p>
+            </div>
+
+            <!-- Pasos / Componentes / Acrónimo -->
+            <div>
+              <h4 id="skill-detail-steps-title" style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">
+                Paso a paso:
+              </h4>
+              <div id="skill-detail-steps-list" style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- Dinámico -->
+              </div>
+            </div>
+
+            <!-- Mini Herramienta Interactiva según habilidad -->
+            <div id="skill-interactive-tool-slot"></div>
+
+            <!-- Cuándo usarla -->
+            <div style="background: var(--color-peach-soft); padding: 16px 20px; border-radius: var(--radius-md); border-left: 4px solid var(--color-peach);">
+              <h4 style="font-size: 1rem; font-weight: 700; color: var(--color-peach); margin-bottom: 4px;">
+                Cuándo usarla:
+              </h4>
+              <p id="skill-detail-when" style="color: var(--text-main);"></p>
+            </div>
+          </div>
+
+          <!-- Navegación entre habilidades -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--border-subtle); flex-wrap: wrap; gap: 10px;">
+            <button class="btn btn-sm btn-outline" id="skill-prev-btn">
+              ‹ Habilidad Anterior
+            </button>
+            <button class="btn btn-sm btn-secondary" id="skill-mark-used-btn">
+              ✓ Marcar como usada hoy
+            </button>
+            <button class="btn btn-sm btn-outline" id="skill-next-btn">
+              Siguiente Habilidad ›
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           6. VISTA: PLAN DE CRISIS Y SOS (Mockup 6)
+           ============================================== -->
+      <section id="crisis-view" class="view">
+        <div class="card" style="border-color: var(--color-rose-light); background: linear-gradient(175deg, #FFFFFF, var(--color-rose-soft));">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+            <div class="icon-box" style="width: 44px; height: 44px; border-radius: 50%; background: var(--color-rose-soft); color: var(--color-rose); display: flex; align-items: center; justify-content: center;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <div>
+              <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--color-rose);">Plan de Crisis y SOS</h2>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Sigue estos pasos si tu malestar está en 4 o 5:
+              </p>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 20px; margin-top: 18px;">
+            <!-- Paso 1: Mis Señales de Alerta -->
+            <div class="card" style="padding: 16px 18px; border-radius: var(--radius-md);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                <span class="pill-badge pill-badge-orange">Paso 1</span>
+                <span>Mis Señales de Alerta</span>
+              </h3>
+              <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.5;">
+                • Pensamientos extremos ("no puedo más")<br>
+                • Tensión física alta, impulso de aislarme o actuar.
+              </p>
+            </div>
+
+            <!-- Paso 2: Bajar Activación Fisiológica (TIPP) -->
+            <div class="card" style="padding: 18px; border-radius: var(--radius-md);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--color-primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span class="pill-badge pill-badge-green">Paso 2</span>
+                <span>Bajar Activación Fisiológica (TIPP)</span>
+              </h3>
+
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <!-- T: Agua Fría -->
+                <div class="custom-checkbox-item" id="tipp-water-item">
+                  <div class="custom-check-box">✓</div>
+                  <div class="checkbox-text" style="flex: 1;">
+                    <h4>T: Agua fría en la cara por 30 segundos</h4>
+                    <p>Activa el reflejo de inmersión para reducir pulsaciones de inmediato.</p>
+                  </div>
+                  <button type="button" class="btn btn-sm btn-secondary" id="btn-start-water-timer">
+                    ⏱️ Temporizador 30s
+                  </button>
+                </div>
+
+                <!-- Temporizador interactivo de agua fría -->
+                <div id="water-timer-box" style="display: none; background: var(--color-sky-soft); padding: 14px; border-radius: var(--radius-md); text-align: center; margin-bottom: 8px;">
+                  <div style="font-size: 1.8rem; font-weight: 800; color: var(--color-sky);" id="water-timer-display">30s</div>
+                  <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">
+                    Inclínate hacia adelante y coloca agua muy fría o toalla húmeda en mejillas y ojos.
+                  </p>
+                  <button type="button" class="btn btn-sm btn-outline" id="btn-cancel-water-timer">Detener</button>
+                </div>
+
+                <!-- I: Ejercicio Intenso -->
+                <div class="custom-checkbox-item">
+                  <div class="custom-check-box">✓</div>
+                  <div class="checkbox-text">
+                    <h4>I: Ejercicio físico intenso (10-15 min)</h4>
+                    <p>Saltos, sentadillas o trote rápido para quemar adrenalina acumulada.</p>
+                  </div>
+                </div>
+
+                <!-- P: Respiración Pausada con Animador -->
+                <div class="custom-checkbox-item" id="tipp-breath-item">
+                  <div class="custom-check-box">✓</div>
+                  <div class="checkbox-text" style="flex: 1;">
+                    <h4>P: Respiración pausada (Inhala 4s, exhala 6s)</h4>
+                    <p>Exhalación prolongada para activar el sistema de calma parasimpático.</p>
+                  </div>
+                </div>
+
+                <!-- Animador de Respiración Integrado -->
+                <div class="tipp-breather-card">
+                  <p style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary-hover); text-transform: uppercase; letter-spacing: 0.05em;">
+                    Respirador Guiado DBT (Ritmo 4 : 6)
+                  </p>
+                  
+                  <div class="breathing-circle-container">
+                    <div class="breathing-circle-outer"></div>
+                    <div class="breathing-circle-inner" id="breathing-circle-text">
+                      Inhala...
+                    </div>
+                  </div>
+
+                  <p id="breathing-instruction-sub" style="font-size: 0.9rem; color: var(--text-muted);">
+                    Inhala en 4 segundos sintiendo tu diafragma... y exhala lento en 6 segundos.
+                  </p>
+                </div>
+
+                <!-- P: Relajación Muscular -->
+                <div class="custom-checkbox-item">
+                  <div class="custom-check-box">✓</div>
+                  <div class="checkbox-text">
+                    <h4>P: Relajación muscular progresiva</h4>
+                    <p>Tensa fuertemente puños, hombros o mandíbula 5 segundos y suelta.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paso 3: Asegurar el Entorno (STOP) -->
+            <div class="card" style="padding: 16px 18px; border-radius: var(--radius-md);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 8px; display: flex; align-items: center; gap: 8px;">
+                <span class="pill-badge pill-badge-purple">Paso 3</span>
+                <span>Asegurar el Entorno (STOP)</span>
+              </h3>
+              <div class="custom-checkbox-item" style="margin-bottom: 0;">
+                <div class="custom-check-box">✓</div>
+                <div class="checkbox-text">
+                  <h4>Alejar objetos de riesgo y cambiar de habitación</h4>
+                  <p>Modifica tu espacio físico para ganar seguridad y tiempo de pausa.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Paso 4: Contactos de Apoyo y Urgencia -->
+            <div class="card" style="padding: 18px; border-radius: var(--radius-md);">
+              <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--color-rose); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                <span class="pill-badge pill-badge-red">Paso 4</span>
+                <span>Contactos de Apoyo y Urgencia</span>
+              </h3>
+
+              <div style="display: flex; flex-direction: column; gap: 10px;">
+                <button type="button" class="btn btn-primary btn-full" id="call-therapist-btn" style="justify-content: flex-start; padding: 14px 20px;">
+                  <span style="font-size: 1.2rem;">📞</span>
+                  <div style="text-align: left; line-height: 1.2;">
+                    <div>Llamar a Terapeuta DBT (Coaching)</div>
+                    <div style="font-size: 0.775rem; opacity: 0.85;">Dra. Sofía Valenzuela • +56 9 8765 4321</div>
+                  </div>
+                </button>
+
+                <button type="button" class="btn btn-secondary btn-full" id="call-support-btn" style="justify-content: flex-start; padding: 14px 20px;">
+                  <span style="font-size: 1.2rem;">💬</span>
+                  <div style="text-align: left; line-height: 1.2;">
+                    <div>Llamar a Contacto de Confianza</div>
+                    <div style="font-size: 0.775rem; opacity: 0.85;">Carlos • +56 9 1234 5678</div>
+                  </div>
+                </button>
+
+                <button type="button" class="btn btn-sos btn-full" id="call-crisis-line-btn" style="justify-content: flex-start; padding: 14px 20px;">
+                  <span style="font-size: 1.2rem;">🚨</span>
+                  <div style="text-align: left; line-height: 1.2;">
+                    <div>Línea Prevención Suicidio (*4141 / 131)</div>
+                    <div style="font-size: 0.775rem; opacity: 0.9;">Atención confidencial 24/7 sin costo</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <!-- Botón Volver -->
+            <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <button class="btn btn-outline" id="crisis-back-home-btn">
+                Volver al Inicio
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==============================================
+           7. VISTA: VISTA TERAPEUTA: GRÁFICO SEMANAL (Mockup 7)
+           ============================================== -->
+      <section id="therapist-view" class="view">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <span class="pill-badge pill-badge-purple" style="margin-bottom: 6px;">Panel Clínico</span>
+            <h2 style="font-size: 1.55rem; font-weight: 700; color: var(--text-main);">Vista Terapeuta: Reporte Semanal</h2>
+          </div>
+          
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <select id="therapist-patient-select" class="form-select" style="width: auto; padding: 8px 14px; font-weight: 600;">
+              <option value="maria">Paciente: María G. • Semana: 19 - 25 Oct 2026</option>
+            </select>
+            <button class="btn btn-sm btn-outline no-print" id="btn-print-report" title="Imprimir o Guardar en PDF">
+              🖨️ Imprimir
+            </button>
+          </div>
+        </div>
+
+        <!-- Tarjetas de Métricas Clínicas -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 22px;">
+          <div class="card" style="padding: 16px;">
+            <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">ADHERENCIA AL REGISTRO</p>
+            <h3 style="font-size: 1.4rem; color: var(--color-primary); font-weight: 800; margin-top: 4px;">5 / 7 días (71%)</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Meta DBT: ≥ 5 días</p>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">MALESTAR PROMEDIO</p>
+            <h3 style="font-size: 1.4rem; color: var(--color-peach); font-weight: 800; margin-top: 4px;">2.4 / 5 (EVA)</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Pico máximo: 4/5 (Lunes)</p>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">HABILIDADES APLICADAS</p>
+            <h3 style="font-size: 1.4rem; color: var(--color-lavender); font-weight: 800; margin-top: 4px;">8 ocasiones</h3>
+            <p style="font-size: 0.75rem; color: var(--text-muted);">Frecuente: TIPP, Mente Sabia</p>
+          </div>
+          <div class="card" style="padding: 16px;">
+            <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600;">CONDUCTAS REALIZADAS</p>
+            <h3 style="font-size: 1.4rem; color: var(--color-primary); font-weight: 800; margin-top: 4px;">0 conductas</h3>
+            <p style="font-size: 0.75rem; color: var(--color-primary); font-weight: 600;">✓ 100% de impulsos contenidos</p>
+          </div>
+        </div>
+
+        <!-- Gráfico 1: Evolución de Emociones (EVA 0-5 • Lun a Dom) -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main);">
+              1. Evolución de Emociones (EVA 0-5 • Lun a Dom)
+            </h3>
+            <div class="chart-legends">
+              <div class="legend-item">
+                <span class="legend-dot" style="background: #F6BD60;"></span>
+                <span>Ansiedad/Miedo</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background: #8DA9C4;"></span>
+                <span>Tristeza</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background: #E29578;"></span>
+                <span>Enojo</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background: #84A59D;"></span>
+                <span>Alegría</span>
+              </div>
+            </div>
+          </div>
+          <!-- Canvas / SVG Chart de Emociones -->
+          <div style="width: 100%; position: relative;">
+            <svg id="emotions-weekly-chart" class="svg-chart" viewBox="0 0 700 220" preserveAspectRatio="none">
+              <!-- Renderizado dinámicamente con SVG interactivo -->
+            </svg>
+          </div>
+        </div>
+
+        <!-- Gráfico 2: Impulsos (0-5) vs. Uso de Habilidades (Lun-Dom) -->
+        <div class="chart-container">
+          <div class="chart-header">
+            <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main);">
+              2. Impulsos (0-5) vs. Uso de Habilidades (Lun-Dom)
+            </h3>
+            <div class="chart-legends">
+              <div class="legend-item">
+                <span class="legend-dot" style="background: var(--color-peach); border-radius: 2px;"></span>
+                <span>■ Nivel Impulso (0-5)</span>
+              </div>
+              <div class="legend-item">
+                <span class="legend-dot" style="background: var(--color-primary-light); border: 1px solid var(--color-primary); border-radius: 2px;"></span>
+                <span>□ Habilidades Usadas</span>
+              </div>
+              <div class="legend-item">
+                <span class="pill-badge pill-badge-green" style="font-size: 0.7rem;">Conductas: 0</span>
+              </div>
+            </div>
+          </div>
+          <div style="width: 100%; position: relative;">
+            <svg id="impulses-skills-chart" class="svg-chart" viewBox="0 0 700 220" preserveAspectRatio="none">
+              <!-- Renderizado dinámicamente -->
+            </svg>
+          </div>
+        </div>
+
+        <!-- Tabla / DataGrid: 3. Detalle Diario: Emoción, Conducta y Habilidad -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="font-size: 1.05rem; font-weight: 700; color: var(--text-main); margin-bottom: 12px;">
+            3. Detalle Diario: Emoción, Conducta y Habilidad
+          </h3>
+          <div class="table-responsive">
+            <table class="dbt-table">
+              <thead>
+                <tr>
+                  <th>Día</th>
+                  <th>Emoción Máx</th>
+                  <th>Impulso (0/5)</th>
+                  <th>¿Realizada?</th>
+                  <th>Habilidades Usadas</th>
+                  <th class="no-print">Acción</th>
+                </tr>
+              </thead>
+              <tbody id="therapist-table-body">
+                <!-- Rellenado dinámicamente según Mockup 7 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Botones de Navegación -->
+        <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+          <button class="btn btn-outline" id="therapist-back-home-btn">
+            ← Menú Principal
+          </button>
+          <button class="btn btn-primary" id="therapist-go-record-btn">
+            Ir a Registro Diario →
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Bottom Navigation Bar (Móvil) -->
+    <nav class="bottom-nav">
+      <button class="bottom-nav-item active" data-target="home-view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span>Inicio</span>
+      </button>
+      <button class="bottom-nav-item" data-target="step1-view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        <span>Registro</span>
+      </button>
+      <button class="bottom-nav-item" data-target="skills-view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 6h10"/><path d="M6 10h10"/></svg>
+        <span>Habilidades</span>
+      </button>
+      <button class="bottom-nav-item sos-item" data-target="crisis-view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>Crisis</span>
+      </button>
+      <button class="bottom-nav-item" data-target="therapist-view">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        <span>Terapeuta</span>
+      </button>
+    </nav>
+
+    <!-- Modal para Detalle de Registro de Día -->
+    <div class="modal-overlay" id="day-detail-modal">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h3 id="modal-day-title">Detalle del Día</h3>
+          <button class="modal-close-btn" id="modal-day-close-btn">&times;</button>
+        </div>
+        <div class="modal-body" id="modal-day-body">
+          <!-- Rellenado dinámicamente -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-primary btn-sm" id="modal-day-ok-btn">Entendido</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toast-container"></div>
+  </div>
+
+  <script type="module" src="data.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
