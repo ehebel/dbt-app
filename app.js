@@ -72,6 +72,7 @@ function playGentleChime(freq = 528) {
 // Inicialización
 document.addEventListener('DOMContentLoaded', () => {
   initStorage();
+  initTheme();
   initRouter();
   renderHomeData();
   renderStep1Form();
@@ -79,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderSkillsAccordion();
   renderTherapistView();
   initEventListeners();
+  initPWA();
 });
 
 // Almacenamiento Local
@@ -853,6 +855,11 @@ function renderEmotionsChart() {
   const svg = document.getElementById('emotions-weekly-chart');
   if (!svg) return;
 
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const gridColor = isDark ? '#2B3A33' : '#E2ECE7';
+  const labelColor = isDark ? '#9BB3A7' : '#647B70';
+  const subtleColor = isDark ? '#6F867B' : '#8FA49A';
+
   const width = 700;
   const height = 220;
   const padLeft = 40;
@@ -883,8 +890,8 @@ function renderEmotionsChart() {
   for (let val = 0; val <= 5; val++) {
     const y = padTop + chartH - (val / 5) * chartH;
     svgContent += `
-      <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="#E2ECE7" stroke-width="1" stroke-dasharray="2,2"/>
-      <text x="${padLeft - 10}" y="${y + 4}" font-size="11" font-weight="600" fill="#8FA49A" text-anchor="end">${val}</text>
+      <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="${gridColor}" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="${padLeft - 10}" y="${y + 4}" font-size="11" font-weight="600" fill="${subtleColor}" text-anchor="end">${val}</text>
     `;
   }
 
@@ -892,7 +899,7 @@ function renderEmotionsChart() {
   records.forEach((rec, i) => {
     const x = padLeft + i * stepX;
     svgContent += `
-      <text x="${x}" y="${height - 10}" font-size="12" font-weight="700" fill="#647B70" text-anchor="middle">${rec.dayLabel}</text>
+      <text x="${x}" y="${height - 10}" font-size="12" font-weight="700" fill="${labelColor}" text-anchor="middle">${rec.dayLabel}</text>
     `;
   });
 
@@ -922,7 +929,7 @@ function renderEmotionsChart() {
     // Puntos interactivos
     points.forEach(p => {
       svgContent += `
-        <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="#FFFFFF" stroke="${serie.color}" stroke-width="2.5" class="chart-point">
+        <circle cx="${p.x}" cy="${p.y}" r="4.5" fill="${isDark ? '#1B2420' : '#FFFFFF'}" stroke="${serie.color}" stroke-width="2.5" class="chart-point">
           <title>${serie.name} (${p.day}): ${p.val}/5</title>
         </circle>
       `;
@@ -935,6 +942,11 @@ function renderEmotionsChart() {
 function renderImpulsesSkillsChart() {
   const svg = document.getElementById('impulses-skills-chart');
   if (!svg) return;
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const gridColor = isDark ? '#2B3A33' : '#E2ECE7';
+  const labelColor = isDark ? '#9BB3A7' : '#647B70';
+  const subtleColor = isDark ? '#6F867B' : '#8FA49A';
 
   const width = 700;
   const height = 220;
@@ -958,8 +970,8 @@ function renderImpulsesSkillsChart() {
   for (let val = 0; val <= 5; val++) {
     const y = padTop + chartH - (val / 5) * chartH;
     svgContent += `
-      <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="#E2ECE7" stroke-width="1" stroke-dasharray="2,2"/>
-      <text x="${padLeft - 10}" y="${y + 4}" font-size="11" font-weight="600" fill="#8FA49A" text-anchor="end">${val}</text>
+      <line x1="${padLeft}" y1="${y}" x2="${width - padRight}" y2="${y}" stroke="${gridColor}" stroke-width="1" stroke-dasharray="2,2"/>
+      <text x="${padLeft - 10}" y="${y + 4}" font-size="11" font-weight="600" fill="${subtleColor}" text-anchor="end">${val}</text>
     `;
   }
 
@@ -987,14 +999,189 @@ function renderImpulsesSkillsChart() {
 
       <!-- Barra Habilidades -->
       <rect x="${centerX + 2}" y="${y2}" width="${barWidth}" height="${barH2}" 
-            fill="#C8DFD4" stroke="#5A8F76" stroke-width="1.5" rx="4">
+            fill="${isDark ? '#2C4337' : '#C8DFD4'}" stroke="#76A992" stroke-width="1.5" rx="4">
         <title>Habilidades usadas (${rec.dayLabel}): ${skillsCount}</title>
       </rect>
 
       <!-- Día label -->
-      <text x="${centerX}" y="${height - 10}" font-size="12" font-weight="700" fill="#647B70" text-anchor="middle">${rec.dayLabel}</text>
+      <text x="${centerX}" y="${height - 10}" font-size="12" font-weight="700" fill="${labelColor}" text-anchor="middle">${rec.dayLabel}</text>
     `;
   });
 
   svg.innerHTML = svgContent;
+}
+
+// ==========================================
+// PWA (Progressive Web App) & Service Worker
+// ==========================================
+let deferredInstallPrompt = null;
+
+function initPWA() {
+  // 1. Registrar Service Worker
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => {
+          console.log('Service Worker registrado correctamente:', reg.scope);
+        })
+        .catch(err => {
+          console.warn('Registro de Service Worker fallido:', err);
+        });
+    });
+  }
+
+  const pwaInstallBtn = document.getElementById('pwa-install-btn');
+  const iosGuideBtn = document.getElementById('ios-guide-btn');
+  const iosModal = document.getElementById('ios-install-modal');
+
+  // Comprobar si ya está corriendo en modo standalone (instalada)
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches 
+    || window.navigator.standalone === true 
+    || document.referrer.includes('android-app://');
+
+  if (isStandalone) {
+    if (pwaInstallBtn) pwaInstallBtn.style.display = 'none';
+    if (iosGuideBtn) iosGuideBtn.style.display = 'none';
+    return;
+  }
+
+  // 2. Capturar evento beforeinstallprompt (Chromium, Edge, Chrome Android)
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevenir el banner automático del navegador
+    e.preventDefault();
+    // Almacenar el evento en memoria para dispararlo bajo demanda
+    deferredInstallPrompt = e;
+
+    // Mostrar el botón de instalación únicamente cuando sea instalable
+    if (pwaInstallBtn) {
+      pwaInstallBtn.style.display = 'inline-flex';
+    }
+  });
+
+  // 3. Manejar clic en el botón de instalación
+  if (pwaInstallBtn) {
+    pwaInstallBtn.addEventListener('click', async () => {
+      if (!deferredInstallPrompt) {
+        return;
+      }
+
+      // Disparar el prompt nativo de instalación
+      deferredInstallPrompt.prompt();
+
+      // Manejar la promesa userChoice
+      try {
+        const choiceResult = await deferredInstallPrompt.userChoice;
+        if (choiceResult.outcome === 'accepted') {
+          playGentleChime(660);
+          showToast('✓ Instalando Mi Compañero DBT...');
+        } else {
+          console.log('El usuario postergó la instalación.');
+        }
+      } catch (err) {
+        console.warn('Error en prompt de instalación:', err);
+      }
+
+      // Limpiar el evento diferido y ocultar el botón
+      deferredInstallPrompt = null;
+      pwaInstallBtn.style.display = 'none';
+    });
+  }
+
+  // 4. Escuchar evento appinstalled para limpiar estado
+  window.addEventListener('appinstalled', () => {
+    deferredInstallPrompt = null;
+    if (pwaInstallBtn) pwaInstallBtn.style.display = 'none';
+    if (iosGuideBtn) iosGuideBtn.style.display = 'none';
+    playGentleChime(784);
+    showToast('🎉 ¡Mi Compañero DBT instalado con éxito!');
+  });
+
+  // 5. Compatibilidad: Detectar iOS Safari (sin soporte de beforeinstallprompt)
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  const isIos = /iphone|ipad|ipod/.test(userAgent);
+  const isSafari = userAgent.includes('safari') && !userAgent.includes('crios') && !userAgent.includes('fxios');
+
+  if (isIos && isSafari && !isStandalone) {
+    if (iosGuideBtn) {
+      iosGuideBtn.style.display = 'inline-flex';
+      iosGuideBtn.addEventListener('click', () => {
+        if (iosModal) iosModal.classList.add('active');
+      });
+    }
+  }
+
+  // Cerrar modal de guía iOS
+  const iosCloseBtn = document.getElementById('modal-ios-close-btn');
+  const iosOkBtn = document.getElementById('modal-ios-ok-btn');
+
+  if (iosCloseBtn && iosModal) {
+    iosCloseBtn.addEventListener('click', () => {
+      iosModal.classList.remove('active');
+    });
+  }
+  if (iosOkBtn && iosModal) {
+    iosOkBtn.addEventListener('click', () => {
+      iosModal.classList.remove('active');
+    });
+  }
+}
+
+// ==========================================
+// MODO OSCURO / CLARO Y DETECCIÓN AUTOMÁTICA
+// ==========================================
+function initTheme() {
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+  const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function applyTheme(theme, save = false) {
+    document.documentElement.setAttribute('data-theme', theme);
+    if (save) {
+      localStorage.setItem('dbt_theme', theme);
+    }
+
+    // Actualizar meta theme-color para navegadores móviles y standalone
+    const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+    if (themeColorMeta) {
+      themeColorMeta.setAttribute('content', theme === 'dark' ? '#121915' : '#5A8F76');
+    }
+
+    // Actualizar título accesible del botón
+    if (themeToggleBtn) {
+      themeToggleBtn.setAttribute('title', theme === 'dark' ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro');
+    }
+
+    // Si la vista terapeuta está visible, redibujar gráficos para adaptar contraste
+    if (state.currentView === 'therapist-view') {
+      renderTherapistCharts();
+    }
+  }
+
+  // 1. Determinar tema inicial (Preferencia manual guardada o detección del sistema)
+  const savedTheme = localStorage.getItem('dbt_theme');
+  if (savedTheme) {
+    applyTheme(savedTheme, false);
+  } else {
+    // Detección automática según el modo del equipo
+    applyTheme(mediaQuery.matches ? 'dark' : 'light', false);
+  }
+
+  // 2. Escuchar cambios automáticos en el sistema operativo del usuario
+  mediaQuery.addEventListener('change', (e) => {
+    const currentManual = localStorage.getItem('dbt_theme');
+    // Si el usuario no ha forzado un modo manualmente, adaptarse al cambio del sistema
+    if (!currentManual) {
+      applyTheme(e.matches ? 'dark' : 'light', false);
+    }
+  });
+
+  // 3. Manejar clic en el botón de cambio de tema
+  if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+      const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(newTheme, true);
+      playGentleChime(newTheme === 'dark' ? 396 : 528);
+      showToast(newTheme === 'dark' ? '🌙 Modo oscuro activado' : '☀️ Modo claro activado', 2200);
+    });
+  }
 }

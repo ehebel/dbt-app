@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="pastelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5A8F76"/>
+      <stop offset="50%" stop-color="#73A38D"/>
+      <stop offset="100%" stop-color="#8E7CC3"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#5A8F76" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Background squircle -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#pastelGrad)" filter="url(#shadow)"/>
+
+  <!-- Dialectical / Wise Mind circle elements -->
+  <!-- Outer serene ring -->
+  <circle cx="256" cy="256" r="140" fill="none" stroke="#FFFFFF" stroke-width="18" opacity="0.95"/>
+  
+  <!-- Rational & Emotional Mind interlocking arcs -->
+  <path d="M 256 116 A 70 70 0 0 1 256 256 A 70 70 0 0 0 256 396" fill="none" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" opacity="0.9"/>
+  
+  <!-- Wise Mind Center Synthesis Core -->
+  <circle cx="256" cy="256" r="26" fill="#FFFFFF"/>
+  <circle cx="256" cy="186" r="14" fill="#FFFFFF" opacity="0.85"/>
+  <circle cx="256" cy="326" r="14" fill="#FFFFFF" opacity="0.85"/>
+</svg>

@@ -67,6 +67,88 @@
   --bottom-bar-height: 72px;
 }
 
+/* Modo Oscuro Calmo (Tonos pastel descansadores, sin negros puros agresivos) */
+[data-theme="dark"] {
+  --color-primary: #76A992;
+  --color-primary-hover: #8CBAA4;
+  --color-primary-light: #2C4337;
+  --color-primary-soft: #1E2E26;
+  --color-primary-subtle: #18251E;
+
+  --color-lavender: #A898E5;
+  --color-lavender-light: #3A3258;
+  --color-lavender-soft: #26203A;
+
+  --color-sky: #7DA6C9;
+  --color-sky-light: #263C4D;
+  --color-sky-soft: #1B2934;
+
+  --color-peach: #E5A380;
+  --color-peach-light: #523626;
+  --color-peach-soft: #382419;
+
+  --color-rose: #E58392;
+  --color-rose-light: #55252D;
+  --color-rose-soft: #3A191E;
+
+  --bg-app: #121915;
+  --bg-card: #1B2420;
+  --bg-card-subtle: #222E28;
+  --border-subtle: #2B3A33;
+  --border-focus: #5A8F76;
+
+  --text-main: #E7EFEA;
+  --text-muted: #9BB3A7;
+  --text-subtle: #6F867B;
+  --text-inverse: #121915;
+
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.45);
+}
+
+/* Fallback automático por preferencia del sistema si no hay data-theme explícito */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-primary: #76A992;
+    --color-primary-hover: #8CBAA4;
+    --color-primary-light: #2C4337;
+    --color-primary-soft: #1E2E26;
+    --color-primary-subtle: #18251E;
+
+    --color-lavender: #A898E5;
+    --color-lavender-light: #3A3258;
+    --color-lavender-soft: #26203A;
+
+    --color-sky: #7DA6C9;
+    --color-sky-light: #263C4D;
+    --color-sky-soft: #1B2934;
+
+    --color-peach: #E5A380;
+    --color-peach-light: #523626;
+    --color-peach-soft: #382419;
+
+    --color-rose: #E58392;
+    --color-rose-light: #55252D;
+    --color-rose-soft: #3A191E;
+
+    --bg-app: #121915;
+    --bg-card: #1B2420;
+    --bg-card-subtle: #222E28;
+    --border-subtle: #2B3A33;
+    --border-focus: #5A8F76;
+
+    --text-main: #E7EFEA;
+    --text-muted: #9BB3A7;
+    --text-subtle: #6F867B;
+    --text-inverse: #121915;
+
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.25);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 16px 36px rgba(0, 0, 0, 0.45);
+  }
+}
+
 /* Reset y Base */
 *, *::before, *::after {
   box-sizing: border-box;
@@ -162,6 +244,77 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+}
+
+/* Botón Toggle de Modo Oscuro / Claro */
+.theme-toggle-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-card);
+  color: var(--text-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.theme-toggle-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: scale(1.06);
+}
+
+.theme-toggle-btn .theme-icon-sun {
+  display: none;
+  color: #F6BD60;
+}
+
+.theme-toggle-btn .theme-icon-moon {
+  display: block;
+  color: var(--color-lavender);
+}
+
+[data-theme="dark"] .theme-toggle-btn .theme-icon-sun {
+  display: block;
+}
+
+[data-theme="dark"] .theme-toggle-btn .theme-icon-moon {
+  display: none;
+}
+
+/* Ajustes de fondo y componentes en Modo Oscuro */
+[data-theme="dark"] body {
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(90, 143, 118, 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(142, 124, 195, 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 50%, rgba(216, 142, 104, 0.08) 0px, transparent 50%);
+}
+
+[data-theme="dark"] .app-header {
+  background: rgba(18, 25, 21, 0.88);
+}
+
+[data-theme="dark"] .bottom-nav {
+  background: rgba(27, 36, 32, 0.92);
+}
+
+[data-theme="dark"] .custom-check-box {
+  background: var(--bg-card-subtle);
+  border-color: #384A41;
+}
+
+[data-theme="dark"] .range-slider {
+  background: #2A3A33;
+}
+
+[data-theme="dark"] .tipp-breather-card {
+  background: linear-gradient(135deg, #182620, #1C2731);
+  border-color: #263830;
 }
 
 /* Desktop Navigation */
@@ -1142,6 +1295,39 @@ main.main-content {
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
+  }
+}
+
+/* Botón PWA Instalable */
+.pwa-install-btn {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-hover));
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 14px rgba(90, 143, 118, 0.3);
+  animation: pwaPulse 3s infinite ease-in-out;
+}
+
+.pwa-install-btn:hover {
+  background: var(--color-primary-hover);
+  box-shadow: 0 6px 18px rgba(90, 143, 118, 0.4);
+  transform: translateY(-1px);
+}
+
+@keyframes pwaPulse {
+  0%, 100% {
+    box-shadow: 0 4px 14px rgba(90, 143, 118, 0.25);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(90, 143, 118, 0.45);
+  }
+}
+
+@media (max-width: 480px) {
+  .pwa-install-btn .install-text {
+    display: none;
+  }
+  .pwa-install-btn {
+    padding: 8px 10px;
   }
 }
 
